@@ -3,9 +3,11 @@ package ru.gb.chat;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
-import javafx.application.Platform;
 
+import javafx.application.Platform;
+import ru.gb.chat.Command;
 
 public class ChatClient {
 

@@ -18,12 +18,11 @@ public class ChatServer {
     }
 
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(8189);
-             AuthService authService = new InMemoryAuthService()) {
+        try (ServerSocket serverSocket = new ServerSocket(8189)) {
             while (true) {
                 System.out.println("Wait client connection...");
                 final Socket socket = serverSocket.accept();
-                new ClientHandler(socket, this, authService);
+                new ClientHandler(socket, this);
                 System.out.println("Client connected");
             }
         } catch (IOException e) {
@@ -63,6 +62,7 @@ public class ChatServer {
         clients.values().forEach(client -> client.sendMessage(msg));
     }
 
+
     public void sendMessageToClient(ClientHandler sender, String to, String message) {
         final ClientHandler receiver = clients.get(to);
         if (receiver != null) {
@@ -72,4 +72,5 @@ public class ChatServer {
             sender.sendMessage(Command.ERROR, "Участника с ником " + to + " нет в чате!");
         }
     }
+
 }

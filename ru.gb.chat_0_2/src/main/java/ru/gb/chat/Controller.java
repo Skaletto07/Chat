@@ -1,5 +1,9 @@
 package ru.gb.chat;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 import javafx.event.ActionEvent;
@@ -15,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import ru.gb.chat.Command;
 import ru.gb.chat.SQL.JdbcApp;
+import ru.gb.chat.server.ChatServer;
 
 public class Controller {
 
@@ -33,6 +38,8 @@ public class Controller {
     private TextField textField;
     @FXML
     private TextArea textArea;
+
+    JdbcApp jdbcApp = new JdbcApp();
 
     private final ChatClient client;
 
@@ -60,6 +67,7 @@ public class Controller {
 
     public void addMessage(String message) {
         textArea.appendText(message + "\n");
+        saveHistory(message);
     }
 
     public void btnAuthClick(ActionEvent actionEvent) {
@@ -109,11 +117,22 @@ public class Controller {
 
     public void btnCngNick(ActionEvent actionEvent) {
         final String newNick = textFieldNewNick.getText().trim();
+        final String oldNick = jdbcApp.returnNickForCngNewNick(this.loginField.getText());
         if (newNick.isEmpty()) {
             return;
         }
-        JdbcApp.changeNick(newNick,this.loginField.getText());
+        jdbcApp.changeNick(newNick,oldNick);
         textFieldNewNick.clear();
         textFieldNewNick.requestFocus();
     }
+
+    public void saveHistory(String message) {
+        try (FileWriter fileWriter = new FileWriter("C:\\GitCHat\\ru.gb.chat_0_2\\src\\main\\java\\ru\\gb\\chat\\history\\history.txt",true)) {
+            fileWriter.write(message + "\n");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

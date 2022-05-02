@@ -14,19 +14,17 @@ public class ClientHandler {
     private final ChatServer server;
     private final DataInputStream in;
     private final DataOutputStream out;
-    private final AuthService authService;
     private final JdbcApp jdbcApp = new JdbcApp();
 
     private String nick;
 
-    public ClientHandler(Socket socket, ChatServer server, AuthService authService) {
+    public ClientHandler(Socket socket, ChatServer server) {
         try {
             this.nick = "";
             this.socket = socket;
             this.server = server;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            this.authService = authService;
 
             new Thread(() -> {
                 try {
@@ -79,18 +77,8 @@ public class ClientHandler {
                     if (command == Command.AUTH) {
                         final String login = params[0];
                         final String password = params[1];
-//                        if (jdbcApp.checkLoginAndPassword(login, password)) {
-//
-//                        }
-
-//                        jdbcApp.connection(login, password);
-//                        final String nick = authService.getNickByLoginAndPassword(login, password);
                         final String nick = jdbcApp.returnNick(login,password);
                         if (nick != null) {
-//                            if (jdbcApp.check(nick)) {
-//                                sendMessage(Command.ERROR, "Пользователь уже авторизован");
-//                                continue;
-//                            }
                             if (server.isNickBusy(nick)) {
                                 sendMessage(Command.ERROR, "Пользователь уже авторизован");
                                 continue;
