@@ -1,9 +1,8 @@
 package ru.gb.chat;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javafx.event.ActionEvent;
@@ -17,9 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import ru.gb.chat.Command;
 import ru.gb.chat.SQL.JdbcApp;
-import ru.gb.chat.server.ChatServer;
 
 public class Controller {
 
@@ -67,7 +64,8 @@ public class Controller {
 
     public void addMessage(String message) {
         textArea.appendText(message + "\n");
-        saveHistory(message);
+
+
     }
 
     public void btnAuthClick(ActionEvent actionEvent) {
@@ -126,13 +124,46 @@ public class Controller {
         textFieldNewNick.requestFocus();
     }
 
-    public void saveHistory(String message) {
-        try (FileWriter fileWriter = new FileWriter("C:\\GitCHat\\ru.gb.chat_0_2\\src\\main\\java\\ru\\gb\\chat\\history\\history.txt",true)) {
-            fileWriter.write(message + "\n");
 
+    public void saveHistory() throws IOException {
+        try {
+            File history = new File("history_" + loginField.getText() + ".txt");
+            if (!history.exists()) {
+                System.out.println("Создаем файл!");
+                history.createNewFile();
+            }
+            BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(history, true)));
+            br.write(textArea.getText());
+            br.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
+
+    public void loadHistory() throws IOException {
+        int posHistory = 100;
+        File history = new File("history_" + loginField.getText() + ".txt");
+        if (history.exists()) {
+
+        List<String> historyList = new ArrayList<>();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(history)));
+        String text;
+        while ((text = bufferedReader.readLine()) != null) {
+            historyList.add(text);
+        }
+
+        if (historyList.size() > posHistory) {
+            for (int i = historyList.size() - posHistory; i <= (historyList.size() - 1); i++) {
+                textArea.appendText(historyList.get(i) + "\n");
+            }
+        } else {
+            for (int i = 0; i < posHistory; i++) {
+                System.out.println(historyList.get(i));
+                }
+            }
+        }
+    }
+
+
 
 }

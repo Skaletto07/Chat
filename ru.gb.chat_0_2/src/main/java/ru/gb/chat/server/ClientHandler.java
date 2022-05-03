@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 
 import ru.gb.chat.Command;
+import ru.gb.chat.Controller;
 import ru.gb.chat.SQL.JdbcApp;
 
 public class ClientHandler {
@@ -15,6 +16,8 @@ public class ClientHandler {
     private final DataInputStream in;
     private final DataOutputStream out;
     private final JdbcApp jdbcApp = new JdbcApp();
+
+    private final Controller controller = new Controller();
 
     private String nick;
 
@@ -78,12 +81,14 @@ public class ClientHandler {
                         final String login = params[0];
                         final String password = params[1];
                         final String nick = jdbcApp.returnNick(login,password);
+
                         if (nick != null) {
                             if (server.isNickBusy(nick)) {
                                 sendMessage(Command.ERROR, "Пользователь уже авторизован");
                                 continue;
                             }
                             sendMessage(Command.AUTHOK, nick);
+//                            controller.loadHistory();
                             this.nick = nick;
                             server.broadcast("Пользователь " + nick + " зашел в чат");
                             server.subscribe(this);

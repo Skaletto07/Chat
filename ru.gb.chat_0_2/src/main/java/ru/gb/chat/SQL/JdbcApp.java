@@ -9,15 +9,9 @@ import java.sql.SQLException;
 
 public class JdbcApp {
 
-     private final Connection connection;
+     private Connection connection;
+     private PreparedStatement statement;
 
-     {
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:javadb.db");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
     public static void main(String[] args) {
@@ -27,14 +21,12 @@ public class JdbcApp {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-//      a.connection("Bully", "AAA");
-
-
 
     }
 
     public  String returnNickForCngNewNick(String login) {
         String nick = null;
+        connection();
         try (PreparedStatement statement = connection.prepareStatement("SELECT nick FROM users WHERE login = ?");
              ResultSet rs = statement.executeQuery()) {
             statement.setString(1, login);
@@ -51,22 +43,9 @@ public class JdbcApp {
 
     }
 
-    public void connection(String nick, String password) {
+    public void connection() {
         try  {
-
-//            createTable(connection);
-//            for (int i = 0; i < 5; i++) {
-//                insert(connection,"nick" + i, "login" + i, "pass" + i);
-//            }
-            // System.out.println(check(nick));
-
-//                createTable(connection);
-//                insert(connection, nick, password);
-            select();
-//            createTable(connection);
-//            insert(connection, nick, password);
-//            select(connection);
-
+            connection = DriverManager.getConnection("jdbc:sqlite:javadb.db");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,6 +53,7 @@ public class JdbcApp {
 
 
     private void dropById(int id) throws SQLException {
+        connection();
         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id = ?")) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -82,6 +62,7 @@ public class JdbcApp {
     }
 
     private void selectByName(String nick) throws SQLException {
+        connection();
         try (final PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE nick = ?");
              final ResultSet rs = statement.executeQuery()) {
             statement.setString(1, nick);
@@ -96,6 +77,7 @@ public class JdbcApp {
     }
 
     private void select() throws SQLException {
+        connection();
         try (final PreparedStatement statement = connection.prepareStatement("SELECT * FROM users");
              final ResultSet rs = statement.executeQuery()) {
 
@@ -113,6 +95,7 @@ public class JdbcApp {
 
 
     private void insert(String nick,String login, String password) throws SQLException {
+        connection();
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users (nick, login, password) VALUES (?, ?, ?)")) {
             statement.setString(1, nick);
             statement.setString(2, login);
@@ -123,6 +106,7 @@ public class JdbcApp {
 
 
     private void createTable() throws SQLException {
+        connection();
         try (final PreparedStatement statement = connection.prepareStatement("" +
                 " CREATE TABLE IF NOT EXISTS users (" +
                 "    id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -136,6 +120,7 @@ public class JdbcApp {
     }
 
     public boolean check(String nick) throws SQLException {
+        connection();
         try (final  PreparedStatement statement = connection.prepareStatement(" SELECT EXISTS(SELECT nick FROM users WHERE nick = ?);");
                 ResultSet rs = statement.executeQuery() ) {
 
@@ -158,6 +143,7 @@ public class JdbcApp {
     }
 
     public boolean checkLoginAndPassword(String nick, String password) throws SQLException {
+        connection();
         try (final  PreparedStatement statement = connection.prepareStatement(" SELECT EXISTS(SELECT nick FROM users WHERE nick = ? AND password = ?);");
              ResultSet rs = statement.executeQuery()) {
             statement.setString(1, nick);
@@ -178,6 +164,7 @@ public class JdbcApp {
     }
 
     public String returnNick(String login, String password)  {
+        connection();
         String nick = null;
         try (final  PreparedStatement statement = connection.prepareStatement(" SELECT nick FROM users WHERE login = ? AND password = ?;")) {
             statement.setString(1, login);
@@ -203,6 +190,7 @@ public class JdbcApp {
     }
 
     public void changeNick(String newNick, String login) {
+        connection();
         try (final  PreparedStatement statement = connection.prepareStatement(" UPDATE users SET nick = ? WHERE login = ?;")) {
             statement.setString(1, newNick);
             statement.setString(2, login);

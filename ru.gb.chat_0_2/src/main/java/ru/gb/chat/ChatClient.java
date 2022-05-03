@@ -62,6 +62,7 @@ public class ChatClient {
                 }
             }
             controller.addMessage(message);
+            controller.saveHistory();
         }
     }
 
@@ -85,6 +86,7 @@ public class ChatClient {
                 if (command == Command.AUTHOK) {
                     afk = false;
                     final String nick = params[0];
+                    controller.loadHistory();
                     controller.addMessage("Успешная авторизация под ником " + nick);
                     controller.setAuth(true);
                     break;

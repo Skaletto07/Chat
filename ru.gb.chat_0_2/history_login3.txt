@@ -1,0 +1,5 @@
+Успешная авторизация под ником nick3
+nick3: asdfasdfasd
+Успешная авторизация под ником nick3
+nick3: asdfasdfasd
+nick2: asdfasdf
