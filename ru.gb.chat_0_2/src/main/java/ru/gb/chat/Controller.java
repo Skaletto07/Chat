@@ -132,8 +132,9 @@ public class Controller {
                 System.out.println("Создаем файл!");
                 history.createNewFile();
             }
-            BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(history, true)));
+            BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(history, false)));
             br.write(textArea.getText());
+            System.out.println(textArea.getText());
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,8 +158,8 @@ public class Controller {
                 textArea.appendText(historyList.get(i) + "\n");
             }
         } else {
-            for (int i = 0; i < posHistory; i++) {
-                System.out.println(historyList.get(i));
+            for (int i = 0; i < historyList.size(); i++) {
+                textArea.appendText(historyList.get(i) + "\n");
                 }
             }
         }

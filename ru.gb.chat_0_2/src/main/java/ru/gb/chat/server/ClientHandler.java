@@ -4,7 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.SQLException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import ru.gb.chat.Command;
 import ru.gb.chat.Controller;
@@ -15,31 +16,38 @@ public class ClientHandler {
     private final ChatServer server;
     private final DataInputStream in;
     private final DataOutputStream out;
+    private final AuthService authService;
     private final JdbcApp jdbcApp = new JdbcApp();
+    ExecutorService clientHandlerES = Executors.newCachedThreadPool();
 
-    private final Controller controller = new Controller();
 
     private String nick;
 
-    public ClientHandler(Socket socket, ChatServer server) {
+    public ClientHandler(Socket socket, ChatServer server, AuthService authService) {
         try {
             this.nick = "";
             this.socket = socket;
             this.server = server;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
+            this.authService = authService;
 
-            new Thread(() -> {
+            clientHandlerES.execute(() -> {
                 try {
                     authenticate();
                     readMessages();
                 } finally {
                     closeConnection();
                 }
-            }).start();
+            });
+//            new Thread(() -> {
+//
+//            }).start();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            clientHandlerES.shutdown();
         }
 
     }
@@ -88,7 +96,6 @@ public class ClientHandler {
                                 continue;
                             }
                             sendMessage(Command.AUTHOK, nick);
-//                            controller.loadHistory();
                             this.nick = nick;
                             server.broadcast("Пользователь " + nick + " зашел в чат");
                             server.subscribe(this);

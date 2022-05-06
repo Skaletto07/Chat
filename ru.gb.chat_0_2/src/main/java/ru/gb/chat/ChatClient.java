@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
 import ru.gb.chat.Command;
@@ -15,8 +18,10 @@ public class ChatClient {
     private DataInputStream in;
     private DataOutputStream out;
     private boolean afk = true;
-
+    ExecutorService afkES = Executors.newSingleThreadExecutor();
+    ExecutorService client = Executors.newSingleThreadExecutor();
     private final Controller controller;
+
 
     public ChatClient(Controller controller) {
         this.controller = controller;
@@ -26,7 +31,7 @@ public class ChatClient {
         socket = new Socket("localhost", 8189);
         in = new DataInputStream(socket.getInputStream());
         out = new DataOutputStream(socket.getOutputStream());
-        final Thread readThread = new Thread(() -> {
+        client.execute(() -> {
             try {
                 waitAuthenticate();
                 readMessage();
@@ -36,15 +41,19 @@ public class ChatClient {
                 closeConnection();
             }
         });
-        readThread.setDaemon(true);
-        readThread.start();
-
+//        final Thread readThread = new Thread(() -> {
+//
+//        });
+//        readThread.setDaemon(true);
+//        readThread.start();
+        client.shutdown();
     }
 
     private void readMessage() throws IOException {
         while (true) {
             final String message = in.readUTF();
             System.out.println("Receive message: " + message);
+            controller.saveHistory();
             if (Command.isCommand(message)) {
                 final Command command = Command.getCommand(message);
                 final String[] params = command.parse(message);
@@ -62,13 +71,13 @@ public class ChatClient {
                 }
             }
             controller.addMessage(message);
-            controller.saveHistory();
+            // controller.saveHistory();
         }
     }
 
     private void waitAuthenticate() throws IOException {
         while (true) {
-            new Thread(() -> {
+            afkES.execute(() -> {
                 try {
                     Thread.sleep(120000);
                     if (afk) {
@@ -77,7 +86,11 @@ public class ChatClient {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }).start();
+            });
+            afkES.shutdown();
+//            new Thread(() -> {
+//
+//            }).start();
             final String msgAuth = in.readUTF();
             if (Command.isCommand(msgAuth)) {
                 final Command command = Command.getCommand(msgAuth);
@@ -86,7 +99,7 @@ public class ChatClient {
                 if (command == Command.AUTHOK) {
                     afk = false;
                     final String nick = params[0];
-                    controller.loadHistory();
+                   controller.loadHistory();
                     controller.addMessage("Успешная авторизация под ником " + nick);
                     controller.setAuth(true);
                     break;
