@@ -1,0 +1,26 @@
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: asdfasdewqr
+nick1: 123412341234
+от nick1: .123412341234
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: assfdasf
+nick2: dfghdfghdf
+Успешная авторизация под ником nick2
+Пользователь nick1 зашел в чат
+nick2: asdfasdf
+nick1: gdsfsfdg
+nick1: asdfasdf
+nick2: dsafasdf
+nick2: asdfasdf
+nick2: sadfasd
+nick2: gfdhdfg
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick1 зашел в чат
+nick1: asdfasdf
+Успешная авторизация под ником nick2
