@@ -10,7 +10,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javafx.application.Platform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.gb.chat.Command;
+import ru.gb.chat.server.ChatServer;
 
 public class ChatClient {
 
@@ -18,9 +21,8 @@ public class ChatClient {
     private DataInputStream in;
     private DataOutputStream out;
     private boolean afk = true;
-    ExecutorService afkES = Executors.newSingleThreadExecutor();
-    ExecutorService client = Executors.newSingleThreadExecutor();
     private final Controller controller;
+    private static final Logger log = LogManager.getLogger(ChatServer.class);
 
 
     public ChatClient(Controller controller) {
@@ -31,28 +33,24 @@ public class ChatClient {
         socket = new Socket("localhost", 8189);
         in = new DataInputStream(socket.getInputStream());
         out = new DataOutputStream(socket.getOutputStream());
-        client.execute(() -> {
+        final Thread readThread = new Thread(() -> {
             try {
                 waitAuthenticate();
                 readMessage();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             } finally {
                 closeConnection();
             }
         });
-//        final Thread readThread = new Thread(() -> {
-//
-//        });
-//        readThread.setDaemon(true);
-//        readThread.start();
-        client.shutdown();
+        readThread.setDaemon(true);
+        readThread.start();
     }
 
     private void readMessage() throws IOException {
         while (true) {
             final String message = in.readUTF();
-            System.out.println("Receive message: " + message);
+            log.debug("Receive message: " + message);
             controller.saveHistory();
             if (Command.isCommand(message)) {
                 final Command command = Command.getCommand(message);
@@ -71,26 +69,21 @@ public class ChatClient {
                 }
             }
             controller.addMessage(message);
-            // controller.saveHistory();
         }
     }
 
     private void waitAuthenticate() throws IOException {
         while (true) {
-            afkES.execute(() -> {
+            new Thread(() -> {
                 try {
                     Thread.sleep(120000);
                     if (afk) {
                         closeConnection();
                     }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
                 }
-            });
-            afkES.shutdown();
-//            new Thread(() -> {
-//
-//            }).start();
+            }).start();
             final String msgAuth = in.readUTF();
             if (Command.isCommand(msgAuth)) {
                 final Command command = Command.getCommand(msgAuth);
@@ -116,21 +109,21 @@ public class ChatClient {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
         if (in != null) {
             try {
                 in.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
         if (out != null) {
             try {
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
         System.exit(0);
@@ -138,10 +131,10 @@ public class ChatClient {
 
     public void sendMessage(String message) {
         try {
-            System.out.println("Send message: " + message);
+            log.debug("Send message: " + message);
             out.writeUTF(message);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 

@@ -1,0 +1,182 @@
+20:43:37.483 [main] DEBUG ru.gb.chat.server.ChatServer Wait client connection...
+20:43:43.373 [main] DEBUG ru.gb.chat.server.ChatServer Client connected
+20:43:43.373 [main] DEBUG ru.gb.chat.server.ChatServer Wait client connection...
+20:43:49.065 [main] DEBUG ru.gb.chat.server.ChatServer Client connected
+20:43:49.065 [main] DEBUG ru.gb.chat.server.ChatServer Wait client connection...
+20:43:55.665 [JavaFX Application Thread] DEBUG ru.gb.chat.server.ChatServer Send message: /auth login2 pass2
+20:43:55.672 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to 
+20:43:55.673 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick2
+20:43:55.676 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: /clients nick2
+20:43:55.677 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: asdfasdewqr
+nick1: 123412341234
+от nick1: .123412341234
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: assfdasf
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+от nick3: heyy
+Успешная авторизация под ником nick2
+
+20:44:01.210 [JavaFX Application Thread] DEBUG ru.gb.chat.server.ChatServer Send message: /auth login3 pass3
+20:44:01.212 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to 
+20:44:01.212 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick2
+20:44:01.212 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick2
+20:44:01.212 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick3
+20:44:01.212 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: Пользователь nick3 зашел в чат
+20:44:01.213 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: asdfasdewqr
+nick1: 123412341234
+от nick1: .123412341234
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: assfdasf
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+от nick3: heyy
+Успешная авторизация под ником nick2
+
+20:44:01.214 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: /clients nick2 nick3
+20:44:01.214 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: asdfasdewqr
+nick1: 123412341234
+от nick1: .123412341234
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: assfdasf
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+от nick3: heyy
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+
+20:44:01.216 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: /clients nick2 nick3
+20:44:01.217 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick3
+nick1: asdfasdewqr
+nick1: 123412341234
+участнику nick1: 543263645
+от nick1: 1234123434563456
+Успешная авторизация под ником nick3
+nick1: assfdasf
+nick2: dfghdfghdf
+Успешная авторизация под ником nick3
+Успешная авторизация под ником nick3
+участнику nick1: hi
+от nick1: hi
+Успешная авторизация под ником nick3
+участнику nick2: heyy
+от nick2: hiiii
+Успешная авторизация под ником nick3
+
+20:44:11.893 [JavaFX Application Thread] DEBUG ru.gb.chat.server.ChatServer Send message: /w nick3 hhhhhhhaaaaaaa
+20:44:11.893 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer Receive message: /w nick3 hhhhhhhaaaaaaa
+20:44:11.894 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick3
+20:44:11.894 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick2
+20:44:11.894 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: от nick2: hhhhhhhaaaaaaa
+20:44:11.894 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: участнику nick3: hhhhhhhaaaaaaa
+20:44:11.895 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick3
+nick1: asdfasdewqr
+nick1: 123412341234
+участнику nick1: 543263645
+от nick1: 1234123434563456
+Успешная авторизация под ником nick3
+nick1: assfdasf
+nick2: dfghdfghdf
+Успешная авторизация под ником nick3
+Успешная авторизация под ником nick3
+участнику nick1: hi
+от nick1: hi
+Успешная авторизация под ником nick3
+участнику nick2: heyy
+от nick2: hiiii
+Успешная авторизация под ником nick3
+
+20:44:11.895 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: asdfasdewqr
+nick1: 123412341234
+от nick1: .123412341234
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: assfdasf
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+от nick3: heyy
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+
+20:44:21.076 [JavaFX Application Thread] DEBUG ru.gb.chat.server.ChatServer Send message: /w nick2 /w nick3 hheeelllooo
+20:44:21.077 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer Receive message: /w nick2 /w nick3 hheeelllooo
+20:44:21.077 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick2
+20:44:21.077 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick3
+20:44:21.077 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: от nick3: /w nick3 hheeelllooo
+20:44:21.077 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: участнику nick2: /w nick3 hheeelllooo
+20:44:21.078 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: asdfasdewqr
+nick1: 123412341234
+от nick1: .123412341234
+Успешная авторизация под ником nick2
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+nick1: assfdasf
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+от nick3: heyy
+Успешная авторизация под ником nick2
+Пользователь nick3 зашел в чат
+участнику nick3: hhhhhhhaaaaaaa
+
+20:44:21.078 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick3
+nick1: asdfasdewqr
+nick1: 123412341234
+участнику nick1: 543263645
+от nick1: 1234123434563456
+Успешная авторизация под ником nick3
+nick1: assfdasf
+nick2: dfghdfghdf
+Успешная авторизация под ником nick3
+Успешная авторизация под ником nick3
+участнику nick1: hi
+от nick1: hi
+Успешная авторизация под ником nick3
+участнику nick2: heyy
+от nick2: hiiii
+Успешная авторизация под ником nick3
+от nick2: hhhhhhhaaaaaaa
+
+20:44:24.991 [pool-2-thread-1] ERROR ru.gb.chat.server.ChatServer Connection reset
+20:44:24.991 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick2
+20:44:24.991 [pool-2-thread-1] ERROR ru.gb.chat.server.ChatServer Connection reset by peer
+20:44:24.991 [pool-2-thread-1] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick3
+20:44:24.992 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Receive message: /clients nick3
+20:44:24.992 [Thread-3] DEBUG ru.gb.chat.server.ChatServer Успешная авторизация под ником nick3
+nick1: asdfasdewqr
+nick1: 123412341234
+участнику nick1: 543263645
+от nick1: 1234123434563456
+Успешная авторизация под ником nick3
+nick1: assfdasf
+nick2: dfghdfghdf
+Успешная авторизация под ником nick3
+Успешная авторизация под ником nick3
+участнику nick1: hi
+от nick1: hi
+Успешная авторизация под ником nick3
+участнику nick2: heyy
+от nick2: hiiii
+Успешная авторизация под ником nick3
+от nick2: hhhhhhhaaaaaaa
+участнику nick2: /w nick3 hheeelllooo
+
+20:44:26.013 [pool-2-thread-2] ERROR ru.gb.chat.server.ChatServer Connection reset
+20:44:26.013 [pool-2-thread-2] DEBUG ru.gb.chat.server.ChatServer SERVER: Send message to nick3
+20:44:26.013 [pool-2-thread-2] ERROR ru.gb.chat.server.ChatServer Connection reset by peer

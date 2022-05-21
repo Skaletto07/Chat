@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.gb.chat.Command;
 import ru.gb.chat.Controller;
 import ru.gb.chat.SQL.JdbcApp;
@@ -18,12 +20,14 @@ public class ClientHandler {
     private final DataOutputStream out;
     private final AuthService authService;
     private final JdbcApp jdbcApp = new JdbcApp();
-    ExecutorService clientHandlerES = Executors.newCachedThreadPool();
+    private final ExecutorService clientHandlerES = Executors.newSingleThreadExecutor();
+
+    private static final Logger log = LogManager.getLogger(ChatServer.class);
 
 
     private String nick;
 
-    public ClientHandler(Socket socket, ChatServer server, AuthService authService) {
+    public ClientHandler(Socket socket, ChatServer server, AuthService authService, ExecutorService executorService) {
         try {
             this.nick = "";
             this.socket = socket;
@@ -32,7 +36,7 @@ public class ClientHandler {
             this.out = new DataOutputStream(socket.getOutputStream());
             this.authService = authService;
 
-            clientHandlerES.execute(() -> {
+            executorService.submit(() -> {
                 try {
                     authenticate();
                     readMessages();
@@ -66,7 +70,7 @@ public class ClientHandler {
                 out.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         try {
             if (socket != null) {
@@ -74,7 +78,7 @@ public class ClientHandler {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -106,7 +110,7 @@ public class ClientHandler {
                     }
                 }
             } catch (IOException  e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
 
         }
@@ -118,10 +122,10 @@ public class ClientHandler {
 
     public void sendMessage(String message) {
         try {
-            System.out.println("SERVER: Send message to " + nick);
+            log.debug("SERVER: Send message to " + nick);
             out.writeUTF(message);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -129,7 +133,7 @@ public class ClientHandler {
         try {
             while (true) {
                 final String msg = in.readUTF();
-                System.out.println("Receive message: " + msg);
+                log.debug("Receive message: " + msg);
                 if (Command.isCommand(msg)) {
                     final Command command = Command.getCommand(msg);
                     final String[] params = command.parse(msg);
@@ -144,7 +148,7 @@ public class ClientHandler {
                 server.broadcast(nick + ": " + msg);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
     }

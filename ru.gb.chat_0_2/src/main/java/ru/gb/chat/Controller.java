@@ -2,6 +2,7 @@ package ru.gb.chat;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,9 +17,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.gb.chat.SQL.JdbcApp;
+import ru.gb.chat.server.ChatServer;
 
 public class Controller {
+    private static final Logger log = LogManager.getLogger(ChatServer.class);
 
     public TextField textFieldNewNick;
     @FXML
@@ -47,6 +52,7 @@ public class Controller {
                 client.openConnection();
                 break;
             } catch (Exception e) {
+                log.error(e.getMessage());
                 showNotification();
             }
         }
@@ -129,15 +135,15 @@ public class Controller {
         try {
             File history = new File("history_" + loginField.getText() + ".txt");
             if (!history.exists()) {
-                System.out.println("Создаем файл!");
+                log.debug("Создаем файл!");
                 history.createNewFile();
             }
             BufferedWriter br = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(history, false)));
             br.write(textArea.getText());
-            System.out.println(textArea.getText());
+            log.debug(textArea.getText());
             br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -146,7 +152,7 @@ public class Controller {
         File history = new File("history_" + loginField.getText() + ".txt");
         if (history.exists()) {
 
-        List<String> historyList = new ArrayList<>();
+        List<String> historyList = new LinkedList<>();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(history)));
         String text;
         while ((text = bufferedReader.readLine()) != null) {
