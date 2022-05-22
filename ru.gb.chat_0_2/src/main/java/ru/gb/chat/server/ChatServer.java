@@ -5,11 +5,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+
+
 import ru.gb.chat.Command;
 import ru.gb.chat.SQL.JdbcApp;
 
 public class ChatServer {
-
+    private static final Logger log = LogManager.getLogger(ChatServer.class);
     private final Map<String, ClientHandler> clients;
 
     public ChatServer() {
@@ -17,16 +25,17 @@ public class ChatServer {
     }
 
     public void run() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         try (ServerSocket serverSocket = new ServerSocket(8189);
              AuthService authService = new JdbcApp()) {
             while (true) {
-                System.out.println("Wait client connection...");
+                log.debug("Wait client connection...");
                 final Socket socket = serverSocket.accept();
-                new ClientHandler(socket, this, authService);
-                System.out.println("Client connected");
+                new ClientHandler(socket, this, authService, executorService);
+                log.debug("Client connected");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           log.error(e.getMessage());
         }
     }
 
